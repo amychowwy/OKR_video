@@ -2,13 +2,15 @@
 
 Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS. Seven scenes, **4,500 frames**, **150 seconds**, **1920 × 1080**, **30 FPS**, H.264 video and AAC English narration. English subtitles are burned into the video and exported as SRT.
 
-## Requested revision: 1.3x speed and brighter young female voice
+## Latest delivery: 1.3x with a brighter female voice
 
-The 1.3x export is **115.4 seconds**, **3,462 frames** at 30 FPS. All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch.
+The revised export is **115.4 seconds**, **3,462 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
 
-**Voice replacement is pending ElevenLabs credentials.** Files and artifacts marked `CURRENT_VOICE` retain the original narration and are an interim speed revision, not the completed new young, cheerful female voice. Installing ElevenLabs skills does not supply an API key. Add `ELEVENLABS_API_KEY` securely through the cloud environment's Secrets settings; never put it in chat, Git, or source files. The finished narration asset will be generated once and committed for credential-free video rendering.
+All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch. The original 150-second authoring timeline and exact company table remain available for editing. The 1.3x export replaces the original footer timer with its new delivery label.
 
-Run the speed export in the cloud with `node scripts/speed.mjs` after the original MP4 is present in `out/`. It validates the 150-second input to prevent double acceleration, creates the faster MP4/SRT, and writes `out/speed-validation.json`. The separate **Export 1.3x video (current voice)** Actions workflow downloads the previous verified full render and performs the same fast conversion without rendering all source frames again. Its manual `source_run_id` input can select another original-speed render.
+Run the cloud export with `node scripts/speed.mjs` after a verified 150-second MP4 is present in `out/`. It replaces the old audio with the committed new narration, accelerates picture/audio, validates voice identity/fingerprints and cue alignment, and exports `OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE.mp4`, SRT, and `speed-validation.json`.
+
+The **Export 1.3x video (bright female voice)** Actions workflow downloads the verified original visual render and performs this conversion without rerendering all animation frames. For future visual edits, first run the original render workflow, then supply that successful run's ID to the speed workflow's manual `source_run_id` input. The earlier `CURRENT_VOICE` artifact was an interim pace check and is superseded by this female-voice version.
 
 ## Download the video in GitHub (no local tools required)
 
@@ -34,11 +36,12 @@ The full cloud render independently passed all checks: exactly 150.000 seconds, 
 - **`src/Video.tsx`**: programmatic scene graphics, table highlights, progress scales and animated Feishu UI.
 - **`src/style.css`**: typography sizes, spacing, borders and supporting interface colors.
 - **`src/Root.tsx`**: output dimensions, frame rate and total frames.
-- **`public/audio/narration.wav`**: committed reusable English synthetic narration (24 kHz mono, about 7 MB).
+- **`public/audio/narration.wav`**: committed reusable Kokoro `af_bella` English female narration (24 kHz mono, about 7 MB).
 - **`public/audio/manifest.json`**: content fingerprint and actual cue audio timing.
-- **`scripts/narration.py`**: optional offline narration regeneration; requires FFmpeg compiled with `libflite` and the `slt` voice. CI reuses the committed WAV instead.
+- **`scripts/narration-kokoro.py`**: regenerate the new female voice offline with `sherpa-onnx==1.12.26`, NumPy, and the official `kokoro-en-v0_19` model; the model is stored outside Git. CI reuses the committed WAV.
+- **`scripts/narration.py`**: legacy Flite fallback; using it replaces the new voice with the original robotic voice.
 
-Narration follows the supplied exact seven-scene script. The voice is an offline synthetic CMU Flite `slt` voice, not a human recording. The engine's permissive license and upstream attribution are included in `public/audio/FLITE-LICENSE.txt`. No secret, API key, paid service, web font or remote image is needed at render time. Replace the voice asset for a human performance if desired, keeping cue synchronization and updating its manifest.
+Narration follows the supplied exact seven-scene script. The current voice is offline synthetic Kokoro `af_bella`, not a human recording or an ElevenLabs voice. The Apache-2.0 license is included in `public/audio/KOKORO-LICENSE.txt`; the legacy Flite license is retained for the fallback generator. Speaker ID 1 is documented as `af_bella` in the official Sherpa/Kokoro documentation. No secret, API key, paid service, web font or remote image is needed at render time. Replace the voice asset for a human performance if desired, keeping cue synchronization and updating its manifest.
 
 The three reference screenshots were not available. The supplied detailed storyboard is authoritative; all graphics, table cells, cursor movements, radio buttons, progress typing and Submit interaction are recreated in code. No screenshots are used as frames.
 
@@ -72,7 +75,7 @@ Without that override, install Remotion's matching browser using `npx remotion b
 After editing `src/content.json`, regenerate narration and subtitles before rendering; a stale narration fingerprint fails explicitly:
 
 ```sh
-python3 scripts/narration.py
+/workspace/shared/okr-voice-venv/bin/python scripts/narration-kokoro.py --model-dir /workspace/shared/okr-voice/kokoro-en-v0_19
 npm run subtitles
 npm run typecheck
 npm run frames
@@ -81,6 +84,8 @@ npm run validate
 ```
 
 The manifest fingerprints the complete content JSON so content and narration are always reviewed together, even after a visual-only content edit. Keep the exact seven boundaries `[0,10,30,55,75,115,140,150]` for this brief. Other projects can edit the scene boundaries and cue times, but the total must remain 150 seconds unless the composition/validation contract is also intentionally revised.
+
+The cloud model archive is downloaded from the official Sherpa-ONNX release, with source URL and SHA256 recorded in `public/audio/manifest.json`. Only the finished reusable narration is committed; the 330 MB neural model and its dictionaries remain outside the checkout.
 
 `policy.verified` is true because the authoritative brief was supplied. It is a final-render gate for unfinished policy edits; `render:draft` is only for internal work when that flag is false.
 

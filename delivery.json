@@ -3,8 +3,11 @@
   "sourceRunId": "41794047518",
   "voice": {
     "requested": "Young adult female, cheerful, bright and friendly; English narration",
-    "status": "awaiting-elevenlabs-credentials",
-    "current": "Original offline synthetic female narration; not the requested new ElevenLabs voice"
+    "status": "ready",
+    "engine": "Kokoro via sherpa-onnx 1.12.26",
+    "speaker": "af_bella",
+    "asset": "public/audio/narration.wav",
+    "description": "New expressive female English narration with upbeat closing; no API credentials required"
   },
-  "revision": 1
+  "revision": 2
 }

@@ -6,8 +6,10 @@ on:
     paths:
       - "src/**"
       - "public/**"
+      - "!public/audio/**"
       - "scripts/**"
       - "!scripts/speed.mjs"
+      - "!scripts/narration-kokoro.py"
       - "package.json"
       - "package-lock.json"
       - "tsconfig.json"

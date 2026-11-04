@@ -1,157 +1,164 @@
 {
-  "engine": "FFmpeg libflite",
-  "voice": "slt",
+  "engine": "Kokoro via sherpa-onnx 1.12.26",
+  "voice": "af_bella",
+  "speakerId": 1,
+  "delivery": "Bright, expressive female English narration; smile and upbeat closing; final playback 1.3x with pitch preserved",
+  "model": "kokoro-en-v0_19",
+  "modelSource": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-en-v0_19.tar.bz2",
+  "modelArchiveSha256": "912804855a04745fa77a30be545b3f9a5d15c4d66db00b88cbcd4921df605ac7",
+  "license": "Apache-2.0",
   "sampleRate": 24000,
   "contentSha256": "95dae0f832c73a1e7cb5a30976791b35b2a407a5575b2102ad15f0dda7456687",
+  "audioSha256": "3093eee53be1d15ed4f1a3bd551006b2a0b5c278c49a30968f2798b2346a6d55",
   "cues": [
     {
       "cue": 1,
       "start": 0.5,
-      "end": 4.855625,
+      "end": 4.274708333333333,
       "speed": 1.0
     },
     {
       "cue": 2,
       "start": 5.4,
-      "end": 7.6775416666666665,
+      "end": 7.519,
       "speed": 1.0
     },
     {
       "cue": 3,
       "start": 10.5,
-      "end": 13.294625,
+      "end": 13.186958333333333,
       "speed": 1.0
     },
     {
       "cue": 4,
       "start": 16,
-      "end": 19.081583333333334,
+      "end": 18.555833333333332,
       "speed": 1.0
     },
     {
       "cue": 5,
       "start": 21,
-      "end": 25.88275,
+      "end": 25.995291666666667,
       "speed": 1.0
     },
     {
       "cue": 6,
       "start": 30.5,
-      "end": 33.41345833333333,
+      "end": 33.06854166666667,
       "speed": 1.0
     },
     {
       "cue": 7,
       "start": 36,
-      "end": 41.084375,
+      "end": 41.04216666666667,
       "speed": 1.0
     },
     {
       "cue": 8,
       "start": 43,
-      "end": 45.570458333333335,
+      "end": 45.324375,
       "speed": 1.0
     },
     {
       "cue": 9,
       "start": 48.5,
-      "end": 51.18091666666667,
+      "end": 51.34375,
       "speed": 1.0
     },
     {
       "cue": 10,
       "start": 55.5,
-      "end": 58.41616666666667,
+      "end": 58.28425,
       "speed": 1.0
     },
     {
       "cue": 11,
       "start": 60,
-      "end": 64.82920833333333,
+      "end": 64.76175,
       "speed": 1.0
     },
     {
       "cue": 12,
       "start": 66.5,
-      "end": 70.02391666666666,
+      "end": 69.53595833333333,
       "speed": 1.0
     },
     {
       "cue": 13,
       "start": 71,
-      "end": 74.50529166666666,
+      "end": 74.06841666666666,
       "speed": 1.0
     },
     {
       "cue": 14,
       "start": 75.5,
-      "end": 78.735375,
+      "end": 78.8665,
       "speed": 1.0
     },
     {
       "cue": 15,
       "start": 81,
-      "end": 87.14908333333334,
-      "speed": 1.0
+      "end": 87.42075,
+      "speed": 1.008
     },
     {
       "cue": 16,
       "start": 87.5,
-      "end": 92.266,
+      "end": 91.83766666666666,
       "speed": 1.0
     },
     {
       "cue": 17,
       "start": 96,
-      "end": 99.63779166666667,
+      "end": 99.52929166666667,
       "speed": 1.0
     },
     {
       "cue": 18,
       "start": 104,
-      "end": 108.424,
+      "end": 108.012875,
       "speed": 1.0
     },
     {
       "cue": 19,
       "start": 115.5,
-      "end": 118.01354166666667,
+      "end": 118.13541666666667,
       "speed": 1.0
     },
     {
       "cue": 20,
       "start": 122,
-      "end": 124.079625,
+      "end": 123.88320833333333,
       "speed": 1.0
     },
     {
       "cue": 21,
       "start": 129,
-      "end": 132.04029166666666,
+      "end": 131.26829166666667,
       "speed": 1.0
     },
     {
       "cue": 22,
       "start": 133,
-      "end": 134.24958333333333,
+      "end": 134.06295833333334,
       "speed": 1.0
     },
     {
       "cue": 23,
       "start": 136,
-      "end": 137.92808333333335,
+      "end": 137.822,
       "speed": 1.0
     },
     {
       "cue": 24,
       "start": 140.5,
-      "end": 143.99370833333333,
+      "end": 143.5765,
       "speed": 1.0
     },
     {
       "cue": 25,
       "start": 145,
-      "end": 148.64054166666668,
+      "end": 148.426375,
       "speed": 1.0
     }
   ]
