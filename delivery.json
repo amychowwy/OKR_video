@@ -5,5 +5,6 @@
     "requested": "Young adult female, cheerful, bright and friendly; English narration",
     "status": "awaiting-elevenlabs-credentials",
     "current": "Original offline synthetic female narration; not the requested new ElevenLabs voice"
-  }
+  },
+  "revision": 1
 }
