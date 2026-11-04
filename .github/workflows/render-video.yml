@@ -11,6 +11,9 @@ on:
       - "package-lock.json"
       - "tsconfig.json"
       - ".github/workflows/render-video.yml"
+concurrency:
+  group: okr-video-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

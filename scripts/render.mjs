@@ -1,10 +1,11 @@
+import { finalize } from "./finalize.mjs";
 import { bundle } from "@remotion/bundler";
 import {
   selectComposition,
   renderMedia,
   renderStill,
 } from "@remotion/renderer";
-import { mkdirSync, readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, unlinkSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 import { content, subtitles } from "./subtitles.mjs";
@@ -75,6 +76,7 @@ if (mode === "frames") {
     mode === "final"
       ? "out/OKR_Self_Review_Explainer.mp4"
       : "out/OKR_Self_Review_Explainer_DRAFT.mp4";
+  const rawOutput = outputLocation + ".render.mp4";
   let last = -1;
   await renderMedia({
     ...options,
@@ -83,7 +85,7 @@ if (mode === "frames") {
     audioCodec: "aac",
     pixelFormat: "yuv420p",
     crf: 18,
-    outputLocation,
+    outputLocation: rawOutput,
     concurrency: 2,
     onProgress: ({ progress }) => {
       const p = Math.floor(progress * 10) * 10;
@@ -93,5 +95,9 @@ if (mode === "frames") {
       }
     },
   });
+  // AAC priming/padding can extend Remotion's container past the last video frame.
+  // Copy all H.264 frames unchanged and encode exactly 150 seconds of audio.
+  finalize(rawOutput, outputLocation);
+  unlinkSync(rawOutput);
   console.log(outputLocation);
 }

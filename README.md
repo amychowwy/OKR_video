@@ -43,7 +43,7 @@ npm run validate
 npm run preview -- --host=0.0.0.0
 ```
 
-`preview` launches Remotion Studio. `render` produces `out/OKR_Self_Review_Explainer.mp4` and SRT. `validate` uses FFprobe to decode/count all video frames, checks H.264, 1080p, 30 FPS, exactly 4,500 frames, AAC narration, and duration exactly 150 seconds (and never greater than 150). It saves the full probe and check results in `out/render-validation.json` and fails on any mismatch.
+`preview` launches Remotion Studio. `render` produces `out/OKR_Self_Review_Explainer.mp4` and SRT. `validate` uses FFprobe to decode/count all video frames, checks H.264, 1080p, 30 FPS, exactly 4,500 frames, AAC narration, and duration exactly 150 seconds (and never greater than 150). The render command removes AAC padding with a final audio encode and copies all H.264 frames unchanged, so container duration also stays at exactly 150 seconds. It saves the full probe and check results in `out/render-validation.json` and fails on any mismatch.
 
 For the current cloud machine's installed Chromium:
 
