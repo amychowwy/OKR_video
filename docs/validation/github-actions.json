@@ -1,0 +1,14 @@
+{
+  "runUrl": "https://github.com/amychowwy/OKR_video/actions/runs/41794047518",
+  "sourceCommit": "1c37f9a",
+  "status": "Success",
+  "duration": "24m 48s",
+  "artifactCount": 1,
+  "artifact": {
+    "id": 13305931901,
+    "name": "OKR_Self_Review_Explainer",
+    "displaySize": "10.2 MB",
+    "archiveDigest": "sha256:dd1cbf8808b3cfdfc6c2e4518037d26bb8342568fc844eca67d9d937b2addf89"
+  },
+  "verification": "GitHub public run summary reports Success and lists the artifact. The successful workflow rendered the full MP4, ran FFprobe validation and uploaded MP4/SRT/report/proof frames. Artifact download requires GitHub sign-in."
+}

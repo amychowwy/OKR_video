@@ -14,6 +14,12 @@ Video-source changes pushed to `main` also start the workflow automatically. Man
 
 The workflow uses a standard GitHub-hosted Ubuntu runner, Node 24, `npm ci`, the Remotion browser, FFmpeg/FFprobe, and the official `actions/upload-artifact` action. It does not call an external rendering or TTS service. Artifact retention is 30 days. GitHub may require enabling Actions for a new repository. MP4s and render outputs are ignored by Git; no Git LFS is used.
 
+## Verified production run
+
+The [successful GitHub Actions run](https://github.com/amychowwy/OKR_video/actions/runs/41794047518) completed the full render and validation, and published **OKR_Self_Review_Explainer** (10.2 MB ZIP). Sign in to GitHub and download it from the run's **Artifacts** section. It includes the MP4, English SRT, FFprobe validation report, and proof frames.
+
+The full cloud render independently passed all checks: exactly 150.000 seconds, 4,500 decoded frames, H.264, 1920 × 1080, 30 FPS, audible AAC narration and synchronized subtitle cues. See `docs/validation/` for the cloud FFprobe report, local MP4 checksum, and GitHub artifact evidence. Neither rendered MP4 is committed to Git.
+
 ## Editable content
 
 - **`src/content.json`**: exact company table, duration options, target rates, both examples, narration/subtitle cues, scene boundaries, main colors, and font family.
