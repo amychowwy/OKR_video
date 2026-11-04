@@ -25,8 +25,20 @@ if(newVoice){
 }
 const inputArgs=newVoice?['-i',input,'-i',delivery.voice.asset,'-map','0:v:0','-map','1:a:0']:['-i',input];
 // Replace the original burned-in 02:30 footer with the accelerated delivery label.
-const filter=`setpts=(PTS-STARTPTS)/${speed},fps=30,drawbox=x=1600:y=1010:w=320:h=60:color=0xF4F7FB:t=fill,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='1.3x | 01m55s':fontsize=18:fontcolor=0x647B97:x=1660:y=1028`;
-execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,'-vf',filter,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
+// Refresh revised captions in the cached original visual render before retiming.
+const window=delivery.captionPatchWindow;
+const patches=window?content.cues.filter(c=>c.start>=window.start&&c.end<=window.end):[];
+const captionFilters=[];
+if(window){
+ captionFilters.push(`drawbox=x=150:y=900:w=1620:h=108:color=0xF4F7FB:t=fill:enable='gte(t,${window.start})*lt(t,${window.end})'`);
+ patches.forEach((cue,i)=>{
+  const file=resolve(`out/caption-patch-${i}.txt`);writeFileSync(file,cue.text);
+  captionFilters.push(`drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=${file}:fontsize=27:fontcolor=white:box=1:boxcolor=0x132B4D@0.96:boxborderw=12:x=(w-text_w)/2:y=945:enable='gte(t,${cue.start})*lt(t,${cue.end})'`);
+ });
+}
+const rangeFilter=sourceVideo.color_range==='pc'?'scale=in_range=full:out_range=limited,format=yuv420p,':'';
+const filter=`${rangeFilter}${captionFilters.length?captionFilters.join(',')+',':''}setpts=(PTS-STARTPTS)/${speed},fps=30,drawbox=x=1600:y=1010:w=320:h=60:color=0xF4F7FB:t=fill,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='1.3x | 01m55s':fontsize=18:fontcolor=0x647B97:x=1660:y=1028`;
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,'-vf',filter,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
 const stamp=n=>{const ms=Math.round(n*1000);return `${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')},${String(ms%1000).padStart(3,'0')}`;};
 writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(c.start/speed)} --> ${stamp(c.end/speed)}\n${c.text}\n`).join('\n'));
 const result=probe(output),video=result.streams.find(s=>s.codec_type==='video'),audio=result.streams.find(s=>s.codec_type==='audio');
@@ -36,7 +48,7 @@ if(loudness.status!==0)throw Error('Unable to decode the narration');
 const meanDb=Number(loudness.stderr.match(/mean_volume: (-?[\d.]+) dB/)?.[1]);
 const peakDb=Number(loudness.stderr.match(/max_volume: (-?[\d.]+) dB/)?.[1]);
 const checks={audibleNarration:Number.isFinite(meanDb)&&meanDb>-45,notClipped:Number.isFinite(peakDb)&&peakDb<0,newVoicePresent:!newVoice||manifest.voice==='af_bella',h264:video?.codec_name==='h264',resolution:video?.width===1920&&video?.height===1080,fps:video?.r_frame_rate==='30/1',frames:Number(video?.nb_read_frames)===frames,duration:Math.abs(Number(result.format.duration)-duration)<.001,aac:audio?.codec_name==='aac',audioSync:Math.abs(Number(audio?.duration)-duration)<=1/30,subtitles:content.cues.every(c=>c.end/speed<=duration)};
-const report={file:output,playbackRate:speed,sourceFrames:4500,expectedFrames:frames,expectedDuration:duration,voiceStatus:delivery.voice.status,requestedVoiceComplete:newVoice,voiceNote:delivery.voice.description??delivery.voice.current,voice:manifest.voice,audioLevelDb:{mean:meanDb,peak:peakDb},checks,passed:Object.values(checks).every(Boolean),ffprobe:result};
+const report={captionPatches:patches,file:output,playbackRate:speed,sourceFrames:4500,expectedFrames:frames,expectedDuration:duration,voiceStatus:delivery.voice.status,requestedVoiceComplete:newVoice,voiceNote:delivery.voice.description??delivery.voice.current,voice:manifest.voice,audioLevelDb:{mean:meanDb,peak:peakDb},checks,passed:Object.values(checks).every(Boolean),ffprobe:result};
 writeFileSync('out/speed-validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({file:output,checks,duration:result.format.duration,voiceStatus:report.voiceStatus},null,2));
 if(!report.passed)process.exitCode=1;

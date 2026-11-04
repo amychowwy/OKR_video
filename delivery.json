@@ -9,5 +9,9 @@
     "asset": "public/audio/narration.wav",
     "description": "New expressive female English narration with upbeat closing; no API credentials required"
   },
-  "revision": 3
+  "revision": 4,
+  "captionPatchWindow": {
+    "start": 115.5,
+    "end": 122
+  }
 }

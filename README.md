@@ -4,6 +4,8 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
+Latest Feishu wording: “Finally, open Feishu OKR.” followed by “Go to the KR you are going to review.” Both narration and burned-in/separate subtitles use these lines. The cached-video export refreshes this caption window before retiming.
+
 **Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/41806918998), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (5.34 MB ZIP). Includes the revised MP4, synchronized English SRT, and validation report.
 
 The revised export is **115.4 seconds**, **3,462 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.

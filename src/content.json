@@ -4,13 +4,41 @@
   "policy": {
     "verified": true,
     "source": "Authoritative user-supplied seven-scene production brief and continuation. All three reference images unavailable; interface recreated from the detailed specification.",
-    "durationOptions": ["6 months", "1 year", "2 years"],
-    "targetCompletionPercentages": [100, 50, 25],
-    "assessmentColumns": ["Duration", "Off-track", "At-risk", "On-track"],
+    "durationOptions": [
+      "6 months",
+      "1 year",
+      "2 years"
+    ],
+    "targetCompletionPercentages": [
+      100,
+      50,
+      25
+    ],
+    "assessmentColumns": [
+      "Duration",
+      "Off-track",
+      "At-risk",
+      "On-track"
+    ],
     "assessmentRows": [
-      ["6 months", "<60%", "60% - 80%", ">80%"],
-      ["1 year", "<30%", "30% - 40%", ">40%"],
-      ["2 years", "<15%", "15% - 20%", ">20%"]
+      [
+        "6 months",
+        "<60%",
+        "60% - 80%",
+        ">80%"
+      ],
+      [
+        "1 year",
+        "<30%",
+        "30% - 40%",
+        ">40%"
+      ],
+      [
+        "2 years",
+        "<15%",
+        "15% - 20%",
+        ">20%"
+      ]
     ],
     "mainExample": {
       "objective": "Drive continuous improvement in people capabilities and organizational effectiveness through targeted talent development and progressive adoption of AI and technology.",
@@ -184,8 +212,13 @@
     },
     {
       "start": 115.5,
-      "end": 121,
-      "text": "Finally, open your KR in Feishu."
+      "end": 118.7,
+      "text": "Finally, open Feishu OKR."
+    },
+    {
+      "start": 118.7,
+      "end": 122,
+      "text": "Go to the KR you are going to review."
     },
     {
       "start": 122,
