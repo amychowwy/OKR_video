@@ -2,7 +2,7 @@
   "engine": "FFmpeg libflite",
   "voice": "slt",
   "sampleRate": 24000,
-  "contentSha256": "533302773edccb56f1427933fb184b13ec201b889874d4626ac82937a1dda5e6",
+  "contentSha256": "95dae0f832c73a1e7cb5a30976791b35b2a407a5575b2102ad15f0dda7456687",
   "cues": [
     {
       "cue": 1,

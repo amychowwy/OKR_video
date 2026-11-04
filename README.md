@@ -10,6 +10,8 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 4. Open the completed green run. Under **Artifacts**, download **OKR_Self_Review_Explainer**.
 5. Extract the ZIP. It contains `OKR_Self_Review_Explainer.mp4`, `OKR_Self_Review_Explainer.srt`, `render-validation.json`, and scene proof frames.
 
+Video-source changes pushed to `main` also start the workflow automatically. Manual execution is always available.
+
 The workflow uses a standard GitHub-hosted Ubuntu runner, Node 24, `npm ci`, the Remotion browser, FFmpeg/FFprobe, and the official `actions/upload-artifact` action. It does not call an external rendering or TTS service. Artifact retention is 30 days. GitHub may require enabling Actions for a new repository. MP4s and render outputs are ignored by Git; no Git LFS is used.
 
 ## Editable content
@@ -72,11 +74,11 @@ The manifest fingerprints the complete content JSON so content and narration are
 
 The target is the expected completion at a six-month checkpoint for a newly started KR: 6 months → 100%, 1 year → 50%, 2 years → 25%. It is not a maximum achievement cap. Record actual completion in Feishu.
 
-| Duration | Off-track | At-risk | On-track |
-| --- | --- | --- | --- |
-| 6 months | <60% | 60% - 80% | >80% |
-| 1 year | <30% | 30% - 40% | >40% |
-| 2 years | <15% | 15% - 20% | >20% |
+| Duration | Off-track | At-risk   | On-track |
+| -------- | --------- | --------- | -------- |
+| 6 months | <60%      | 60% - 80% | >80%     |
+| 1 year   | <30%      | 30% - 40% | >40%     |
+| 2 years  | <15%      | 15% - 20% | >20%     |
 
 The published ranges are preserved exactly. No additional fractional-boundary policy is inferred. The animation does not implement a general status calculator.
 
