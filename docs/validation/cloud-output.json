@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "1c37f9a",
+  "file": "OKR_Self_Review_Explainer.mp4",
+  "bytes": 7642715,
+  "sha256": "bb0113973f581dc4124324397eb91893ed66da246dc2abe0d3e8fb233f0e22c4",
+  "verification": "Complete cloud render; exact 150.000-second audio/video; all 4500 decoded frames; encoded table frame visually inspected.",
+  "referenceImages": "All three unavailable; recreated from the complete authoritative text brief.",
+  "narration": "Reusable offline synthetic English CMU Flite slt voice."
+}
