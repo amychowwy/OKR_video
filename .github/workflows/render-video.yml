@@ -1,0 +1,52 @@
+name: Render OKR self-review video
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Prepare FFmpeg and browser dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core libnss3 libatk-bridge2.0-0 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2t64
+          npx remotion browser ensure
+      - name: Type check
+        run: npm run typecheck
+      - name: Load composition
+        run: npm run compositions
+      - name: Render scene proof frames
+        run: npm run frames
+      - name: Render narrated 1080p MP4
+        run: npm run render
+      - name: Validate all frames and exact runtime
+        run: npm run validate
+      - name: Upload MP4, subtitles, validation report, and proof frames
+        uses: actions/upload-artifact@v4
+        with:
+          name: OKR_Self_Review_Explainer
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            out/OKR_Self_Review_Explainer.mp4
+            out/OKR_Self_Review_Explainer.srt
+            out/render-validation.json
+            out/frames/
+      - name: Upload diagnostics after a failed render
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-diagnostics
+          if-no-files-found: ignore
+          path: |
+            out/render-validation.json
+            out/frames/

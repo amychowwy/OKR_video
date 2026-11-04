@@ -1,0 +1,30 @@
+{
+  "name": "okr-self-review-explainer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Editable 150-second OKR self-review video",
+  "scripts": {
+    "preview": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "compositions": "remotion compositions src/index.ts",
+    "frames": "node scripts/render.mjs frames",
+    "render": "node scripts/render.mjs final",
+    "render:draft": "node scripts/render.mjs draft",
+    "validate": "node scripts/validate.mjs",
+    "subtitles": "node scripts/subtitles.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.409",
+    "@remotion/bundler": "4.0.409",
+    "@remotion/renderer": "4.0.409",
+    "remotion": "4.0.409",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

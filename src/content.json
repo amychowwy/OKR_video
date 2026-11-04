@@ -1,0 +1,250 @@
+{
+  "title": "How to Complete Your OKR Self-Review",
+  "subtitle": "Completion Rate + Status",
+  "policy": {
+    "verified": true,
+    "source": "Authoritative user-supplied seven-scene production brief and continuation. All three reference images unavailable; interface recreated from the detailed specification.",
+    "durationOptions": [
+      "6 months",
+      "1 year",
+      "2 years"
+    ],
+    "targetCompletionPercentages": [
+      100,
+      50,
+      25
+    ],
+    "assessmentColumns": [
+      "Duration",
+      "Off-track",
+      "At-risk",
+      "On-track"
+    ],
+    "assessmentRows": [
+      [
+        "6 months",
+        "<60%",
+        "60% - 80%",
+        ">80%"
+      ],
+      [
+        "1 year",
+        "<30%",
+        "30% - 40%",
+        ">40%"
+      ],
+      [
+        "2 years",
+        "<15%",
+        "15% - 20%",
+        ">20%"
+      ]
+    ],
+    "mainExample": {
+      "objective": "Drive continuous improvement in people capabilities and organizational effectiveness through targeted talent development and progressive adoption of AI and technology.",
+      "keyResult": "Achieve an average of 20 training hours per colleague in 2026.",
+      "target": 50,
+      "actual": 35,
+      "status": "At Risk",
+      "evidence": "Actual completion: 35%. One-year KR: 30% - 40% \u2192 At Risk.",
+      "duration": "1 year",
+      "reviewMonths": 6
+    },
+    "secondaryExample": {
+      "duration": "6 months",
+      "actual": 85,
+      "status": "On Track"
+    },
+    "boundaryNote": "The published table does not explicitly resolve certain fractional boundary cases. Preserve the original ranges rather than inventing a company policy."
+  },
+  "theme": {
+    "background": "#F4F7FB",
+    "panel": "#FFFFFF",
+    "ink": "#132B4D",
+    "muted": "#526781",
+    "accent": "#087F78",
+    "blue": "#386BE8",
+    "amber": "#AE6100",
+    "purple": "#7954CB",
+    "fontFamily": "DejaVu Sans, sans-serif"
+  },
+  "scenes": [
+    {
+      "id": "opening",
+      "title": "How to Complete Your OKR Self-Review",
+      "start": 0,
+      "end": 10,
+      "eyebrow": "OKR / SELF-REVIEW"
+    },
+    {
+      "id": "duration",
+      "title": "Step 1: Check KR Duration",
+      "start": 10,
+      "end": 30,
+      "eyebrow": "01 / DURATION"
+    },
+    {
+      "id": "target",
+      "title": "Step 2: Identify Target Completion",
+      "start": 30,
+      "end": 55,
+      "eyebrow": "02 / TARGET"
+    },
+    {
+      "id": "actual",
+      "title": "Step 3: Assess Actual Completion",
+      "start": 55,
+      "end": 75,
+      "eyebrow": "03 / ACTUAL"
+    },
+    {
+      "id": "status",
+      "title": "Step 4: Determine KR Status",
+      "start": 75,
+      "end": 115,
+      "eyebrow": "04 / STATUS"
+    },
+    {
+      "id": "feishu",
+      "title": "Step 5: Record in Feishu",
+      "start": 115,
+      "end": 140,
+      "eyebrow": "05 / RECORD"
+    },
+    {
+      "id": "closing",
+      "title": "Completion Rate + Status",
+      "start": 140,
+      "end": 150,
+      "eyebrow": "YOUR NEXT REVIEW"
+    }
+  ],
+  "cues": [
+    {
+      "start": 0.5,
+      "end": 5.4,
+      "text": "For each Key Result, or KR, you'll need to assess two things:"
+    },
+    {
+      "start": 5.4,
+      "end": 9.5,
+      "text": "its completion rate and its status."
+    },
+    {
+      "start": 10.5,
+      "end": 16,
+      "text": "First, check how long your KR is set for."
+    },
+    {
+      "start": 16,
+      "end": 21,
+      "text": "Is it six months, one year, or two years?"
+    },
+    {
+      "start": 21,
+      "end": 29.5,
+      "text": "Its duration determines the expected progress for the six-month review cycle."
+    },
+    {
+      "start": 30.5,
+      "end": 36,
+      "text": "Our review cycle is always six months."
+    },
+    {
+      "start": 36,
+      "end": 43,
+      "text": "For a newly started KR, the target is one hundred percent for a six-month KR,"
+    },
+    {
+      "start": 43,
+      "end": 48.5,
+      "text": "fifty percent for a one-year KR,"
+    },
+    {
+      "start": 48.5,
+      "end": 54.5,
+      "text": "and twenty-five percent for a two-year KR."
+    },
+    {
+      "start": 55.5,
+      "end": 60,
+      "text": "Next, assess what you've actually achieved."
+    },
+    {
+      "start": 60,
+      "end": 66.5,
+      "text": "For example, your one-year KR may have reached thirty-five percent completion,"
+    },
+    {
+      "start": 66.5,
+      "end": 71,
+      "text": "even though the target for this cycle is fifty percent."
+    },
+    {
+      "start": 71,
+      "end": 74.8,
+      "text": "Your actual completion rate is thirty-five percent."
+    },
+    {
+      "start": 75.5,
+      "end": 81,
+      "text": "Now use the assessment table to determine your status."
+    },
+    {
+      "start": 81,
+      "end": 87.5,
+      "text": "Find the row that matches your KR duration, then compare your actual completion rate with the ranges."
+    },
+    {
+      "start": 87.5,
+      "end": 96,
+      "text": "For a one-year KR, thirty-five percent falls within the At Risk range."
+    },
+    {
+      "start": 96,
+      "end": 104,
+      "text": "For a six-month KR, eighty-five percent is On Track."
+    },
+    {
+      "start": 104,
+      "end": 113.5,
+      "text": "Remember, status depends on both the duration and completion rate."
+    },
+    {
+      "start": 115.5,
+      "end": 121,
+      "text": "Finally, open your KR in Feishu."
+    },
+    {
+      "start": 122,
+      "end": 128,
+      "text": "Select the appropriate status,"
+    },
+    {
+      "start": 129,
+      "end": 133,
+      "text": "enter your actual progress percentage,"
+    },
+    {
+      "start": 133,
+      "end": 136,
+      "text": "and click Submit."
+    },
+    {
+      "start": 136,
+      "end": 139.5,
+      "text": "Repeat this for each KR."
+    },
+    {
+      "start": 140.5,
+      "end": 145,
+      "text": "That's it. Check the duration, assess your progress,"
+    },
+    {
+      "start": 145,
+      "end": 149.5,
+      "text": "determine the status, and record your results in Feishu."
+    }
+  ],
+  "feishuObjective": "Drive continuous improvement in people capabilities and organizational effectiveness."
+}
