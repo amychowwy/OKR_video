@@ -3,3 +3,5 @@ dist/
 out/
 .remotion/
 *.log
+# Local secrets written by `elevenlabs onboard`
+/.env.local

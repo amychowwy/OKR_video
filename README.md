@@ -2,6 +2,14 @@
 
 Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS. Seven scenes, **4,500 frames**, **150 seconds**, **1920 × 1080**, **30 FPS**, H.264 video and AAC English narration. English subtitles are burned into the video and exported as SRT.
 
+## Requested revision: 1.3x speed and brighter young female voice
+
+The 1.3x export is **115.4 seconds**, **3,462 frames** at 30 FPS. All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch.
+
+**Voice replacement is pending ElevenLabs credentials.** Files and artifacts marked `CURRENT_VOICE` retain the original narration and are an interim speed revision, not the completed new young, cheerful female voice. Installing ElevenLabs skills does not supply an API key. Add `ELEVENLABS_API_KEY` securely through the cloud environment's Secrets settings; never put it in chat, Git, or source files. The finished narration asset will be generated once and committed for credential-free video rendering.
+
+Run the speed export in the cloud with `node scripts/speed.mjs` after the original MP4 is present in `out/`. It validates the 150-second input to prevent double acceleration, creates the faster MP4/SRT, and writes `out/speed-validation.json`. The separate **Export 1.3x video (current voice)** Actions workflow downloads the previous verified full render and performs the same fast conversion without rendering all source frames again. Its manual `source_run_id` input can select another original-speed render.
+
 ## Download the video in GitHub (no local tools required)
 
 1. Open this repository's **Actions** tab.

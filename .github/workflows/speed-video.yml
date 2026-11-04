@@ -1,0 +1,52 @@
+name: Export 1.3x video (current voice)
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful original 150-second render run ID
+        required: true
+        default: '41794047518'
+  push:
+    branches: [main]
+    paths:
+      - 'delivery.json'
+      - 'scripts/speed.mjs'
+      - '.github/workflows/speed-video.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okr-speed-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  speed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install FFmpeg and FFprobe
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Fetch original verified render
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.source_run_id || '41794047518' }}
+          name: OKR_Self_Review_Explainer
+          path: source-render
+      - name: Accelerate video and narration, synchronize subtitles, validate
+        run: node scripts/speed.mjs source-render/OKR_Self_Review_Explainer.mp4
+      - name: Upload 1.3x current-voice version (new voice pending credentials)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OKR_Self_Review_Explainer_1.3x_CURRENT_VOICE
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            out/OKR_Self_Review_Explainer_1.3x_CURRENT_VOICE.mp4
+            out/OKR_Self_Review_Explainer_1.3x_CURRENT_VOICE.srt
+            out/speed-validation.json

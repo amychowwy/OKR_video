@@ -1,0 +1,28 @@
+import {execFileSync} from 'node:child_process';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {content,validateContent} from './subtitles.mjs';
+
+validateContent();
+const delivery=JSON.parse(readFileSync('delivery.json','utf8'));
+const speed=delivery.playbackRate;
+if(speed!==1.3)throw Error('This delivery is approved for 1.3x playback.');
+const input=process.argv[2]??'out/OKR_Self_Review_Explainer.mp4';
+const stem='out/OKR_Self_Review_Explainer_1.3x_CURRENT_VOICE';
+const output=stem+'.mp4';
+if(resolve(input)===resolve(output))throw Error('Input and output must differ.');
+const probe=(file)=>JSON.parse(execFileSync('ffprobe',['-v','error','-count_frames','-show_streams','-show_format','-of','json',file],{encoding:'utf8'}));
+const source=probe(input);
+const sourceVideo=source.streams.find(s=>s.codec_type==='video');
+if(Number(sourceVideo?.nb_read_frames)!==4500||Number(source.format.duration)!==150)throw Error('Expected original 150-second, 4500-frame source; refusing to accelerate an already accelerated file.');
+mkdirSync('out',{recursive:true});
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error','-i',input,'-vf',`setpts=(PTS-STARTPTS)/${speed},fps=30`,'-af',`atempo=${speed}`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
+const stamp=n=>{const ms=Math.round(n*1000);return `${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')},${String(ms%1000).padStart(3,'0')}`;};
+writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(c.start/speed)} --> ${stamp(c.end/speed)}\n${c.text}\n`).join('\n'));
+const result=probe(output),video=result.streams.find(s=>s.codec_type==='video'),audio=result.streams.find(s=>s.codec_type==='audio');
+const frames=Math.ceil(4500/speed),duration=frames/30;
+const checks={h264:video?.codec_name==='h264',resolution:video?.width===1920&&video?.height===1080,fps:video?.r_frame_rate==='30/1',frames:Number(video?.nb_read_frames)===frames,duration:Math.abs(Number(result.format.duration)-duration)<.001,aac:audio?.codec_name==='aac',audioSync:Math.abs(Number(audio?.duration)-duration)<=1/30,subtitles:content.cues.every(c=>c.end/speed<=duration)};
+const report={file:output,playbackRate:speed,sourceFrames:4500,expectedFrames:frames,expectedDuration:duration,voiceStatus:delivery.voice.status,requestedVoiceComplete:false,voiceNote:delivery.voice.current,checks,passed:Object.values(checks).every(Boolean),ffprobe:result};
+writeFileSync('out/speed-validation.json',JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({file:output,checks,duration:result.format.duration,voiceStatus:report.voiceStatus},null,2));
+if(!report.passed)process.exitCode=1;
