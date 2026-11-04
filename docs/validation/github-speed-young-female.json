@@ -1,0 +1,14 @@
+{
+  "runUrl": "https://github.com/amychowwy/OKR_video/actions/runs/41806918998",
+  "sourceCommit": "78abfa1",
+  "status": "Success",
+  "artifactName": "OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE",
+  "artifactId": "13309769345",
+  "displaySize": "5.34 MB",
+  "archiveDigest": "sha256:c16b754bcf585fc29956966ca05a3920b3ea97d822343b255fd61d808f7f6a86",
+  "playbackRate": 1.3,
+  "duration": 115.4,
+  "frames": 3462,
+  "voice": "Kokoro af_bella, new bright female English narration",
+  "apiKeyRequired": false
+}

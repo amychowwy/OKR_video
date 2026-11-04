@@ -4,6 +4,8 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
+**Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/41806918998), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (5.34 MB ZIP). Includes the revised MP4, synchronized English SRT, and validation report.
+
 The revised export is **115.4 seconds**, **3,462 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
 
 All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch. The original 150-second authoring timeline and exact company table remain available for editing. The 1.3x export replaces the original footer timer with its new delivery label.
