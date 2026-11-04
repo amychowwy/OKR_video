@@ -24,20 +24,19 @@ if(newVoice){
  if(manifest.cues.length!==content.cues.length||!manifest.cues.every((c,i)=>c.start===content.cues[i].start&&c.end<=content.cues[i].end))throw Error('New narration and subtitle timing mismatch.');
 }
 const inputArgs=newVoice?['-i',input,'-i',delivery.voice.asset,'-map','0:v:0','-map','1:a:0']:['-i',input];
-// Replace the original burned-in 02:30 footer with the accelerated delivery label.
 // Refresh revised captions in the cached original visual render before retiming.
-const window=delivery.captionPatchWindow;
-const patches=window?content.cues.filter(c=>c.start>=window.start&&c.end<=window.end):[];
+const windows=delivery.captionPatchWindows??(delivery.captionPatchWindow?[delivery.captionPatchWindow]:[]);
+const patches=content.cues.filter(c=>windows.some(w=>c.start>=w.start&&c.end<=w.end));
 const captionFilters=[];
-if(window){
- captionFilters.push(`drawbox=x=150:y=900:w=1620:h=108:color=0xF4F7FB:t=fill:enable='gte(t,${window.start})*lt(t,${window.end})'`);
- patches.forEach((cue,i)=>{
-  const file=resolve(`out/caption-patch-${i}.txt`);writeFileSync(file,cue.text);
-  captionFilters.push(`drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=${file}:fontsize=27:fontcolor=white:box=1:boxcolor=0x132B4D@0.96:boxborderw=12:x=(w-text_w)/2:y=945:enable='gte(t,${cue.start})*lt(t,${cue.end})'`);
- });
-}
+windows.forEach(window=>captionFilters.push(`drawbox=x=150:y=900:w=1620:h=108:color=0xF4F7FB:t=fill:enable='gte(t,${window.start})*lt(t,${window.end})'`));
+patches.forEach((cue,i)=>{
+ const file=resolve(`out/caption-patch-${i}.txt`);writeFileSync(file,cue.text);
+ captionFilters.push(`drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=${file}:fontsize=27:fontcolor=white:box=1:boxcolor=0x132B4D@0.96:boxborderw=12:x=(w-text_w)/2:y=945:enable='gte(t,${cue.start})*lt(t,${cue.end})'`);
+});
 const rangeFilter=sourceVideo.color_range==='pc'?'scale=in_range=full:out_range=limited,format=yuv420p,':'';
-const filter=`${rangeFilter}${captionFilters.length?captionFilters.join(',')+',':''}setpts=(PTS-STARTPTS)/${speed},fps=30,drawbox=x=1600:y=1010:w=320:h=60:color=0xF4F7FB:t=fill,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='1.3x | 01m55s':fontsize=18:fontcolor=0x647B97:x=1660:y=1028`;
+// Clear cached footer text, preserving the progress bar at the bottom edge.
+const footerFilter='drawbox=x=0:y=1010:w=1920:h=60:color=0xF4F7FB:t=fill';
+const filter=`${rangeFilter}${captionFilters.length?captionFilters.join(',')+',':''}setpts=(PTS-STARTPTS)/${speed},fps=30,${footerFilter}`;
 execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,'-vf',filter,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
 const stamp=n=>{const ms=Math.round(n*1000);return `${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')},${String(ms%1000).padStart(3,'0')}`;};
 writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(c.start/speed)} --> ${stamp(c.end/speed)}\n${c.text}\n`).join('\n'));

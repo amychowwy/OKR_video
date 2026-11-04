@@ -122,11 +122,11 @@
   "cues": [
     {
       "start": 0.5,
-      "end": 5.4,
-      "text": "For each Key Result, or KR, you'll need to assess two things:"
+      "end": 7,
+      "text": "To review your OKR, you'll need to assess your Key Result (KR) with two things:"
     },
     {
-      "start": 5.4,
+      "start": 7,
       "end": 9.5,
       "text": "its completion rate and its status."
     },

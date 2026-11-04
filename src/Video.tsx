@@ -559,13 +559,6 @@ export const Video: React.FC = () => {
           <span>{cue.text}</span>
         </div>
       )}
-      <div className="footer">
-        <span>Duration → Target → Actual → Status → Feishu</span>
-        <span>
-          {String(Math.floor(f / 30 / 60)).padStart(2, "0")}:
-          {String(Math.floor(f / 30) % 60).padStart(2, "0")} / 02:30
-        </span>
-      </div>
       <div className="progress" style={{ width: `${(f / 4499) * 100}%` }} />
     </AbsoluteFill>
   );

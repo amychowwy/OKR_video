@@ -4,13 +4,15 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
+Opening narration/subtitle: “To review your OKR, you'll need to assess your Key Result (KR) with two things:” followed by “its completion rate and its status.” The bottom navigation text and speed/duration label are removed.
+
 Latest Feishu wording: “Finally, open Feishu OKR.” followed by “Go to the KR you are going to review.” Both narration and burned-in/separate subtitles use these lines. The cached-video export refreshes this caption window before retiming.
 
 **Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/41810268551), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (5.37 MB ZIP). Includes the revised MP4, synchronized English SRT, and validation report.
 
 The revised export is **115.4 seconds**, **3,462 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
 
-All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch. The original 150-second authoring timeline and exact company table remain available for editing. The 1.3x export replaces the original footer timer with its new delivery label.
+All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch. The original 150-second authoring timeline and exact company table remain available for editing. Both bottom footer labels are removed throughout the revised video; the progress bar is retained.
 
 Run the cloud export with `node scripts/speed.mjs` after a verified 150-second MP4 is present in `out/`. It replaces the old audio with the committed new narration, accelerates picture/audio, validates voice identity/fingerprints and cue alignment, and exports `OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE.mp4`, SRT, and `speed-validation.json`.
 
