@@ -9,7 +9,7 @@
     "asset": "public/audio/narration.wav",
     "description": "New expressive female English narration with upbeat closing; no API credentials required"
   },
-  "revision": 10,
+  "revision": 11,
   "captionPatchWindows": [
     {
       "start": 0.5,
