@@ -12,6 +12,7 @@ on:
       - 'delivery.json'
       - 'scripts/speed.mjs'
       - 'public/audio/**'
+      - 'public/cover/**'
       - '.github/workflows/speed-video.yml'
 permissions:
   contents: read
@@ -56,3 +57,5 @@ jobs:
             out/OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE.mp4
             out/OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE.srt
             out/speed-validation.json
+            out/OKR_Self_Review_Cover.png
+            out/OKR_Self_Review_Cover_LMS.jpg

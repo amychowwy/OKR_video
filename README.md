@@ -4,7 +4,9 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
-Five requested pauses are shortened using speech-safe cuts; final runtime is about **1:45.23**. Progress-bar fills are anchored to the three target narration phrases, and the Step 5 interface note is removed. `delivery.json` stores the original-output pause windows and source-timeline bar anchors; exported SRT cues are remapped across every cut.
+A matching **two-second cover image** now opens the video. Separate **1920×1080 PNG** and **1280×720 JPG** files are included in the download for manual LMS upload. The editable design is `src/Cover.tsx`; regenerate both with `REMOTION_BROWSER_EXECUTABLE=/usr/bin/chromium node scripts/cover.mjs`. The narration and all subtitles begin two seconds later; the video body retains the approved edits.
+
+Five requested pauses are shortened using speech-safe cuts; body runtime is about **1:45.23** (plus a two-second cover, **1:47.23** total). Progress-bar fills are anchored to the three target narration phrases, and the Step 5 interface note is removed. `delivery.json` stores the original-output pause windows and source-timeline bar anchors; exported SRT cues are remapped across every cut.
 
 The target-completion scene now shows the three duration-specific targets without the repeated standalone 50% card. A fresh 25-second Remotion scene is substituted into the cached visual source; the rest of the animation, narration, and timing are retained.
 
@@ -14,7 +16,7 @@ Latest Feishu wording: “Finally, open Feishu OKR.” followed by “Go to the 
 
 **Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/42560559708), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (4.96 MB ZIP). Includes the revised MP4, synchronized English SRT, and validation report.
 
-The revised export is **105.23 seconds**, **3,157 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
+The revised export is **107.23 seconds**, **3,217 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
 
 All seven scenes and burned-in subtitles accelerate together; the separate English SRT timings are divided by 1.3. FFmpeg `atempo` preserves voice pitch. The original 150-second authoring timeline and exact company table remain available for editing. Both bottom footer labels are removed throughout the revised video; the progress bar is retained.
 
