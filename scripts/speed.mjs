@@ -36,22 +36,37 @@ patches.forEach((cue,i)=>{
  const file=resolve(`out/caption-patch-${i}.txt`);writeFileSync(file,cue.text);
  captionFilters.push(`drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:textfile=${file}:fontsize=27:fontcolor=white:box=1:boxcolor=0x132B4D@0.96:boxborderw=12:x=(w-text_w)/2:y=945:enable='gte(t,${cue.start})*lt(t,${cue.end})'`);
 });
+if(delivery.removeInterfaceNote)captionFilters.push("delogo=x=116:y=744:w=210:h=65:show=0:enable='gte(t,115)*lt(t,140)'");
 const rangeFilter=sourceVideo.color_range==='pc'?'scale=in_range=full:out_range=limited,format=yuv420p,':'';
 // Clear cached footer text, preserving the progress bar at the bottom edge.
 const footerFilter='drawbox=x=0:y=1010:w=1920:h=60:color=0xF4F7FB:t=fill';
 const filter=`${rangeFilter}${captionFilters.length?captionFilters.join(',')+',':''}setpts=(PTS-STARTPTS)/${speed},fps=30,${footerFilter}`;
+// Requested pause windows refer to the previous 1.3x export. Protect spoken audio.
+const cuts=(delivery.pauseRanges??[]).map(([start,end])=>{
+ const spokenEnd=Math.max(start,...manifest.cues.filter(c=>c.start/speed<end&&c.end/speed>start).map(c=>c.end/speed+.04));
+ return {start:Math.ceil(spokenEnd*30)/30,end:Math.floor((end-delivery.retainedPauseSeconds)*30)/30};
+}).filter(c=>c.end>c.start);
+const uncutOutput=cuts.length?output+'.uncut.mp4':output;
 const videoFilters=patchScene?['-filter_complex',`[0:v]${rangeFilter}split=2[a][b];[a]trim=start=0:end=30,setpts=PTS-STARTPTS[before];[b]trim=start=55:end=150,setpts=PTS-STARTPTS[after];[2:v]scale=in_range=full:out_range=limited,format=yuv420p,setpts=PTS-STARTPTS[patch];[before][patch][after]concat=n=3:v=1:a=0[base];[base]${filter.slice(rangeFilter.length)}[finalv]`]:['-vf',filter];
-execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,...mapping,...videoFilters,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,...mapping,...videoFilters,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',uncutOutput],{stdio:'inherit'});
+const removedFrames=cuts.reduce((n,c)=>n+Math.round((c.end-c.start)*30),0);
+if(cuts.length){
+ const spans=[];let cursor=0;for(const c of cuts){spans.push([cursor,c.start]);cursor=c.end;}spans.push([cursor,Math.ceil(4500/speed)/30]);
+ const filters=spans.map(([a,b],i)=>`[0:v]trim=start=${a}:end=${b},setpts=PTS-STARTPTS[v${i}];[0:a]atrim=start=${a}:end=${b},asetpts=PTS-STARTPTS[a${i}]`).join(';')+';'+spans.map((_,i)=>`[v${i}][a${i}]`).join('')+`concat=n=${spans.length}:v=1:a=1[v][a]`;
+ const duration=(Math.ceil(4500/speed)-removedFrames)/30;
+ execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error','-i',uncutOutput,'-filter_complex',filters,'-map','[v]','-map','[a]','-t',String(duration),'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
+}
+const retime=t=>t-cuts.reduce((n,c)=>n+Math.max(0,Math.min(t,c.end)-c.start),0);
 const stamp=n=>{const ms=Math.round(n*1000);return `${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')},${String(ms%1000).padStart(3,'0')}`;};
-writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(c.start/speed)} --> ${stamp(c.end/speed)}\n${c.text}\n`).join('\n'));
+writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(retime(c.start/speed))} --> ${stamp(retime(c.end/speed))}\n${c.text}\n`).join('\n'));
 const result=probe(output),video=result.streams.find(s=>s.codec_type==='video'),audio=result.streams.find(s=>s.codec_type==='audio');
-const frames=Math.ceil(4500/speed),duration=frames/30;
+const frames=Math.ceil(4500/speed)-removedFrames,duration=frames/30;
 const loudness=spawnSync('ffmpeg',['-hide_banner','-i',output,'-vn','-af','volumedetect','-f','null','-'],{encoding:'utf8'});
 if(loudness.status!==0)throw Error('Unable to decode the narration');
 const meanDb=Number(loudness.stderr.match(/mean_volume: (-?[\d.]+) dB/)?.[1]);
 const peakDb=Number(loudness.stderr.match(/max_volume: (-?[\d.]+) dB/)?.[1]);
-const checks={audibleNarration:Number.isFinite(meanDb)&&meanDb>-45,notClipped:Number.isFinite(peakDb)&&peakDb<0,newVoicePresent:!newVoice||manifest.voice==='af_bella',h264:video?.codec_name==='h264',resolution:video?.width===1920&&video?.height===1080,fps:video?.r_frame_rate==='30/1',frames:Number(video?.nb_read_frames)===frames,duration:Math.abs(Number(result.format.duration)-duration)<.001,aac:audio?.codec_name==='aac',audioSync:Math.abs(Number(audio?.duration)-duration)<=1/30,subtitles:content.cues.every(c=>c.end/speed<=duration)};
-const report={captionPatches:patches,file:output,playbackRate:speed,sourceFrames:4500,expectedFrames:frames,expectedDuration:duration,voiceStatus:delivery.voice.status,requestedVoiceComplete:newVoice,voiceNote:delivery.voice.description??delivery.voice.current,voice:manifest.voice,audioLevelDb:{mean:meanDb,peak:peakDb},checks,passed:Object.values(checks).every(Boolean),ffprobe:result};
+const checks={audibleNarration:Number.isFinite(meanDb)&&meanDb>-45,notClipped:Number.isFinite(peakDb)&&peakDb<0,newVoicePresent:!newVoice||manifest.voice==='af_bella',h264:video?.codec_name==='h264',resolution:video?.width===1920&&video?.height===1080,fps:video?.r_frame_rate==='30/1',frames:Number(video?.nb_read_frames)===frames,duration:Math.abs(Number(result.format.duration)-duration)<.001,aac:audio?.codec_name==='aac',audioSync:Math.abs(Number(audio?.duration)-duration)<=1/30,subtitles:content.cues.every(c=>retime(c.end/speed)<=duration)};
+const report={pauseCuts:cuts,removedSeconds:removedFrames/30,targetBarTiming:delivery.targetBarTiming,interfaceNoteRemoved:delivery.removeInterfaceNote,captionPatches:patches,file:output,playbackRate:speed,sourceFrames:4500,expectedFrames:frames,expectedDuration:duration,voiceStatus:delivery.voice.status,requestedVoiceComplete:newVoice,voiceNote:delivery.voice.description??delivery.voice.current,voice:manifest.voice,audioLevelDb:{mean:meanDb,peak:peakDb},checks,passed:Object.values(checks).every(Boolean),ffprobe:result};
 writeFileSync('out/speed-validation.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({file:output,checks,duration:result.format.duration,voiceStatus:report.voiceStatus},null,2));
 if(!report.passed)process.exitCode=1;

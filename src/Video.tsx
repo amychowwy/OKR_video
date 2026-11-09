@@ -1,3 +1,4 @@
+import delivery from '../delivery.json';
 import React from "react";
 import {
   AbsoluteFill,
@@ -97,7 +98,7 @@ const Target = () => {
               <div className="bar-track">
                 <div
                   style={{
-                    width: `${interpolate(f, [25 + i * 145, 140 + i * 145], [0, policy.targetCompletionPercentages[i]], clamp)}%`,
+                    width: `${interpolate(f, [(delivery.targetBarTiming[i].start-30)*30, (delivery.targetBarTiming[i].end-30)*30], [0, policy.targetCompletionPercentages[i]], clamp)}%`,
                     background: i === mainDurationIndex ? t.accent : t.blue,
                   }}
                 />
@@ -106,7 +107,7 @@ const Target = () => {
           ))}
         </Card>
       </div>
-      {f >= 490 ? (
+      {f >= 660 ? (
         <Card className="target-timeline">
           <Monthline />
         </Card>
@@ -293,11 +294,6 @@ const Feishu = () => {
         <p>Overview</p>
         <p className="selected">Objectives & KRs</p>
         <p>My reviews</p>
-        <div className="mock-label">
-          Custom animated interface
-          <br />
-          Feishu-inspired workflow
-        </div>
       </aside>
       <main>
         <div className="label">MY OBJECTIVES / SELF-REVIEW</div>
