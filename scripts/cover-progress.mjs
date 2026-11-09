@@ -1,0 +1,12 @@
+import {bundle} from '@remotion/bundler';
+import {selectComposition,renderStill} from '@remotion/renderer';
+import {mkdirSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {execFileSync} from 'node:child_process';
+mkdirSync('public/cover-lms',{recursive:true});
+const serveUrl=await bundle({entryPoint:resolve('src/index.ts'),onProgress:()=>{}});
+const opts={serveUrl,id:'OKRCoverLMS',browserExecutable:process.env.REMOTION_BROWSER_EXECUTABLE||undefined,chromiumOptions:{gl:'swangle'}};
+const composition=await selectComposition(opts);
+await renderStill({...opts,composition,frame:0,output:'public/cover-lms/OKR_Self_Review_Cover_Progress.png'});
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error','-i','public/cover-lms/OKR_Self_Review_Cover_Progress.png','-vf','scale=1280:720','-q:v','2','public/cover-lms/OKR_Self_Review_Cover_Progress_LMS.jpg']);
+console.log('Exported 1920x1080 PNG and 1280x720 LMS JPG.');
