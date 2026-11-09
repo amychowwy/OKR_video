@@ -4,6 +4,8 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
+The target-completion scene now shows the three duration-specific targets without the repeated standalone 50% card. A fresh 25-second Remotion scene is substituted into the cached visual source; the rest of the animation, narration, and timing are retained.
+
 Opening narration/subtitle: “To review your OKR, you'll need to assess your Key Result (KR) with two things:” followed by “its completion rate and its status.” The bottom navigation text and speed/duration label are removed.
 
 Latest Feishu wording: “Finally, open Feishu OKR.” followed by “Go to the KR you are going to review.” Both narration and burned-in/separate subtitles use these lines. The cached-video export refreshes this caption window before retiming.

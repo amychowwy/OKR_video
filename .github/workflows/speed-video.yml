@@ -22,7 +22,7 @@ concurrency:
 jobs:
   speed:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,7 +31,7 @@ jobs:
       - name: Install FFmpeg and FFprobe
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          sudo apt-get install -y ffmpeg fonts-dejavu-core libnss3 libatk1.0-0t64 libatk-bridge2.0-0t64 libatspi2.0-0t64 libcups2t64 libdrm2 libxkbcommon0 libnspr4 libxfixes3 libpango-1.0-0 libcairo2 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2t64
       - name: Fetch original verified render
         uses: actions/download-artifact@v4
         with:
@@ -39,6 +39,11 @@ jobs:
           run-id: ${{ inputs.source_run_id || '41794047518' }}
           name: OKR_Self_Review_Explainer
           path: source-render
+      - name: Prepare corrected target-completion scene
+        run: |
+          npm ci
+          npx remotion browser ensure
+          node scripts/render-target-scene.mjs
       - name: Accelerate video and narration, synchronize subtitles, validate
         run: node scripts/speed.mjs source-render/OKR_Self_Review_Explainer.mp4
       - name: Upload 1.3x bright female narration video

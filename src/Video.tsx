@@ -105,20 +105,6 @@ const Target = () => {
             </div>
           ))}
         </Card>
-        <Card className="target-explainer">
-          <div className="label">NEWLY STARTED KR</div>
-          <h2>
-            Expected progress
-            <br />
-            at the checkpoint
-          </h2>
-          <p>Target completion rate</p>
-          <div className="big-number">
-            {example.target}
-            <span>%</span>
-          </div>
-          <div className="small">Target for This Cycle: {example.target}%</div>
-        </Card>
       </div>
       {f >= 490 ? (
         <Card className="target-timeline">

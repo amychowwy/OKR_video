@@ -1,0 +1,10 @@
+import {bundle} from '@remotion/bundler';
+import {selectComposition,renderMedia} from '@remotion/renderer';
+import {resolve} from 'node:path';
+import {mkdirSync} from 'node:fs';
+mkdirSync('out',{recursive:true});
+const serveUrl=await bundle({entryPoint:resolve('src/index.ts'),onProgress:()=>{}});
+const opts={serveUrl,id:'OKRSelfReview',browserExecutable:process.env.REMOTION_BROWSER_EXECUTABLE||undefined,chromiumOptions:{gl:'swangle'}};
+const composition=await selectComposition(opts);
+await renderMedia({...opts,composition,frameRange:[900,1649],muted:true,codec:'h264',crf:18,pixelFormat:'yuv420p',concurrency:2,outputLocation:'out/target-scene-patch.mp4'});
+console.log('Rendered target scene without the fixed 50% card (750 frames).');

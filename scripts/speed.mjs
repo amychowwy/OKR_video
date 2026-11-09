@@ -23,7 +23,10 @@ if(newVoice){
  if(manifest.voice!==delivery.voice.speaker||manifest.audioSha256!==createHash('sha256').update(readFileSync(delivery.voice.asset)).digest('hex')||manifest.contentSha256!==createHash('sha256').update(readFileSync('src/content.json')).digest('hex'))throw Error('New narration identity or fingerprint mismatch.');
  if(manifest.cues.length!==content.cues.length||!manifest.cues.every((c,i)=>c.start===content.cues[i].start&&c.end<=content.cues[i].end))throw Error('New narration and subtitle timing mismatch.');
 }
-const inputArgs=newVoice?['-i',input,'-i',delivery.voice.asset,'-map','0:v:0','-map','1:a:0']:['-i',input];
+const patchScene=delivery.targetScenePatch===true;
+const inputArgs=newVoice?['-i',input,'-i',delivery.voice.asset]:['-i',input];
+if(patchScene) inputArgs.push('-i','out/target-scene-patch.mp4');
+const mapping=patchScene?['-map','[finalv]','-map',newVoice?'1:a:0':'0:a:0']:['-map','0:v:0','-map',newVoice?'1:a:0':'0:a:0'];
 // Refresh revised captions in the cached original visual render before retiming.
 const windows=delivery.captionPatchWindows??(delivery.captionPatchWindow?[delivery.captionPatchWindow]:[]);
 const patches=content.cues.filter(c=>windows.some(w=>c.start>=w.start&&c.end<=w.end));
@@ -37,7 +40,8 @@ const rangeFilter=sourceVideo.color_range==='pc'?'scale=in_range=full:out_range=
 // Clear cached footer text, preserving the progress bar at the bottom edge.
 const footerFilter='drawbox=x=0:y=1010:w=1920:h=60:color=0xF4F7FB:t=fill';
 const filter=`${rangeFilter}${captionFilters.length?captionFilters.join(',')+',':''}setpts=(PTS-STARTPTS)/${speed},fps=30,${footerFilter}`;
-execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,'-vf',filter,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
+const videoFilters=patchScene?['-filter_complex',`[0:v]${rangeFilter}split=2[a][b];[a]trim=start=0:end=30,setpts=PTS-STARTPTS[before];[b]trim=start=55:end=150,setpts=PTS-STARTPTS[after];[2:v]scale=in_range=full:out_range=limited,format=yuv420p,setpts=PTS-STARTPTS[patch];[before][patch][after]concat=n=3:v=1:a=0[base];[base]${filter.slice(rangeFilter.length)}[finalv]`]:['-vf',filter];
+execFileSync('ffmpeg',['-y','-hide_banner','-loglevel','error',...inputArgs,...mapping,...videoFilters,'-af',`atempo=${speed},loudnorm=I=-16:TP=-2:LRA=7`,'-c:v','libx264','-preset','fast','-crf','18','-pix_fmt','yuv420p','-color_range','tv','-c:a','aac','-ar','48000','-ac','2','-b:a','192k','-movflags','+faststart',output],{stdio:'inherit'});
 const stamp=n=>{const ms=Math.round(n*1000);return `${String(Math.floor(ms/3600000)).padStart(2,'0')}:${String(Math.floor(ms/60000)%60).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')},${String(ms%1000).padStart(3,'0')}`;};
 writeFileSync(stem+'.srt',content.cues.map((c,i)=>`${i+1}\n${stamp(c.start/speed)} --> ${stamp(c.end/speed)}\n${c.text}\n`).join('\n'));
 const result=probe(output),video=result.streams.find(s=>s.codec_type==='video'),audio=result.streams.find(s=>s.codec_type==='audio');
