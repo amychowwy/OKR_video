@@ -9,7 +9,7 @@
     "asset": "public/audio/narration.wav",
     "description": "New expressive female English narration with upbeat closing; no API credentials required"
   },
-  "revision": 13,
+  "revision": 14,
   "captionPatchWindows": [
     {
       "start": 0.5,
@@ -62,7 +62,7 @@
   "removeInterfaceNote": true,
   "cover": {
     "durationSeconds": 2,
-    "image": "public/cover/OKR_Self_Review_Cover.png",
-    "lmsImage": "public/cover/OKR_Self_Review_Cover_LMS.jpg"
+    "image": "public/cover-lms/OKR_Self_Review_Cover_Progress.png",
+    "lmsImage": "public/cover-lms/OKR_Self_Review_Cover_Progress_LMS.jpg"
   }
 }

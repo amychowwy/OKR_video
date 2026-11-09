@@ -4,7 +4,9 @@ Editable corporate explainer built with Remotion, React, TypeScript, SVG and CSS
 
 ## Latest delivery: 1.3x with a brighter female voice
 
-A matching **two-second cover image** now opens the video. Separate **1920×1080 PNG** and **1280×720 JPG** files are included in the download for manual LMS upload. The editable design is `src/Cover.tsx`; regenerate both with `REMOTION_BROWSER_EXECUTABLE=/usr/bin/chromium node scripts/cover.mjs`. The narration and all subtitles begin two seconds later; the video body retains the approved edits.
+The video cover now uses the revised line **“Select a status based on progress”**, matching the standalone LMS image. The original two-second cover duration and approved video body remain the same.
+
+A matching **two-second cover image** now opens the video. Separate **1920×1080 PNG** and **1280×720 JPG** files are included in the download for manual LMS upload. The current editable design is `src/CoverLMS.tsx`; regenerate both with `REMOTION_BROWSER_EXECUTABLE=/usr/bin/chromium node scripts/cover-progress.mjs`. The narration and all subtitles begin two seconds later; the video body retains the approved edits.
 
 Five requested pauses are shortened using speech-safe cuts; body runtime is about **1:45.23** (plus a two-second cover, **1:47.23** total). Progress-bar fills are anchored to the three target narration phrases, and the Step 5 interface note is removed. `delivery.json` stores the original-output pause windows and source-timeline bar anchors; exported SRT cues are remapped across every cut.
 
