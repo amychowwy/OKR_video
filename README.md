@@ -14,7 +14,7 @@ Opening narration/subtitle: “To review your OKR, you'll need to assess your Ke
 
 Latest Feishu wording: “Finally, open Feishu OKR.” followed by “Go to the KR you are going to review.” Both narration and burned-in/separate subtitles use these lines. The cached-video export refreshes this caption window before retiming.
 
-**Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/42560559708), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (4.96 MB ZIP). Includes the revised MP4, synchronized English SRT, and validation report.
+**Download:** open the [successful revised video run](https://github.com/amychowwy/OKR_video/actions/runs/42573807653), sign in to GitHub, and download **OKR_Self_Review_Explainer_1.3x_YOUNG_FEMALE** under Artifacts (5.68 MB ZIP). Includes the revised MP4, synchronized English SRT, validation report, PNG cover, and LMS-ready JPG cover.
 
 The revised export is **107.23 seconds**, **3,217 frames** at 30 FPS, with new **Kokoro `af_bella` female English narration**. The intended delivery is bright, youthful and friendly, with an upbeat closing. This is newly synthesized narration, not a pitch shift of the original Flite voice. No ElevenLabs key is needed for this version.
 

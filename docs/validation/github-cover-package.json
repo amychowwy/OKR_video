@@ -1,0 +1,14 @@
+{
+  "runUrl": "https://github.com/amychowwy/OKR_video/actions/runs/42573807653",
+  "status": "Success",
+  "artifactId": "13654552223",
+  "size": "5.68 MB",
+  "duration": 107.233333,
+  "frames": 3217,
+  "coverSeconds": 2,
+  "coverImages": {
+    "png": "1920x1080",
+    "jpg": "1280x720"
+  },
+  "lmsUpload": "User will upload manually"
+}
